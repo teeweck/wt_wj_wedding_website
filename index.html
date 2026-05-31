@@ -1844,6 +1844,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let html = '';
     for (let i = 2; i <= num; i++) {
       html += `
+        <div class="guest-entry">
         <div class="form-row guest-block">
           <div class="fg">
             <label>Guest ${i} Name</label>
@@ -1859,8 +1860,12 @@ document.addEventListener('DOMContentLoaded', function() {
             </select>
           </div>
         </div>
-        <div class="fg"><label>Guest ${i} Dietary Restrictions / Allergies</label><input type="text" id="f-dietary" placeholder="None, nut allergy, etc." /></div>
+          <div class="fg">
+            <label>Guest ${i} Dietary Restrictions / Allergies</label>
+            <input type="text" name="guest_dietary_${i}" placeholder="None, nut allergy, etc." />
+          </div>
         <div class="guest-divider" aria-hidden="true"></div>
+        </div>
       `;
     }
     guestSection.innerHTML = html;
@@ -1994,22 +1999,24 @@ function toggleFAQ(el) {
 //     data.dietary,
 //     data.song,
 //     data.message,
-//     (data.additionalGuests || []).map(function(g) { return [g.name || '', g.meal || ''].join(' - '); }).join(' | ')
+//     (data.additionalGuests || []).map(function(g) { return [g.name || '', g.meal || '', g.dietary || ''].join(' - '); }).join(' | ')
 //   ]);
 //   return ContentService.createTextOutput(JSON.stringify({result:'success'})).setMimeType(ContentService.MimeType.JSON);
 // }
 
 // ── PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE ──
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwLvXwBCiR0E7_So22Tj5Z5MFdQiYRsgt4CXf7g8lIS3LMaGbPja2NhbXfRoW2UjiJx/exec';
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyIgmqzQeu3M3zIx-5YiihQZbSEQ-o7PfecpxN4Mx7UwSItlnYWOd-Jz6HHATSmjXjc/exec';
 function getAdditionalGuests() {
-  return Array.from(document.querySelectorAll('.guest-block')).map((block) => {
-    const nameInput = block.querySelector('input[name^="guest_name_"]');
-    const mealSelect = block.querySelector('select[name^="guest_meal_"]');
+  return Array.from(document.querySelectorAll('.guest-entry')).map((entry) => {
+    const nameInput = entry.querySelector('input[name^="guest_name_"]');
+    const mealSelect = entry.querySelector('select[name^="guest_meal_"]');
+    const dietaryInput = entry.querySelector('input[name^="guest_dietary_"]');
     return {
       name: nameInput ? nameInput.value.trim() : '',
-      meal: mealSelect ? mealSelect.value : ''
+      meal: mealSelect ? mealSelect.value : '',
+      dietary: dietaryInput ? dietaryInput.value.trim() : ''
     };
-  }).filter((guest) => guest.name || guest.meal);
+  }).filter((guest) => guest.name || guest.meal || guest.dietary);
 }
 
 
