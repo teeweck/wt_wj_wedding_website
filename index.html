@@ -1137,6 +1137,12 @@ nav.scrolled {
 }
 .fg select option { background: #2c1a0e; color: #fff; }
 .fg textarea { resize: vertical; min-height: 88px; }
+.guest-divider {
+  height: 1px;
+  width: 100%;
+  margin: 18px 0 8px;
+  background: linear-gradient(90deg, transparent 0%, rgba(201,151,58,0.28) 12%, rgba(201,151,58,0.42) 50%, rgba(201,151,58,0.28) 88%, transparent 100%);
+}
 
 .radio-group { display: flex; gap: 10px; }
 .radio-opt { flex: 1; position: relative; }
@@ -1690,7 +1696,7 @@ footer {
             <option value="2">2 guests</option>
             <option value="3">3 guests</option>
             <option value="4">4 guests</option>
-            <option value="5+">5 guests</option>
+            <option value="5">5 guests</option>
           </select>
         </div>
         <div class="fg">
@@ -1704,6 +1710,7 @@ footer {
         </div>
       </div>
       <div class="fg"><label>Dietary Restrictions / Allergies</label><input type="text" id="f-dietary" placeholder="None, nut allergy, etc." /></div>
+      <div class="guest-divider" aria-hidden="true"></div>
       <!-- Dynamic Guest Section -->
       <div id="guest-section"></div>
       <div class="fg"><label>Song Request</label><input type="text" id="f-song" placeholder="What should the DJ play?" /></div>
@@ -1853,6 +1860,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
         </div>
         <div class="fg"><label>Guest ${i} Dietary Restrictions / Allergies</label><input type="text" id="f-dietary" placeholder="None, nut allergy, etc." /></div>
+        <div class="guest-divider" aria-hidden="true"></div>
       `;
     }
     guestSection.innerHTML = html;
