@@ -1867,7 +1867,7 @@ footer {
           </select>
         </div>
         <div class="fg">
-          <label>Meal Preference</label>
+          <label>Meal Preference *</label>
           <select id="f-meal">
             <option value="">Select one</option>
             <option>Standard Chinese Banquet</option>
@@ -2180,6 +2180,9 @@ async function submitRSVP() {
   const email = document.getElementById('f-email').value.trim();
   if (!firstName || !lastName || !email) { alert('Please fill in your name and email.'); return; }
   const attendance = document.querySelector('input[name="attend"]:checked');
+  const meal = document.getElementById('f-meal').value;
+  const isDeclining = attendance && attendance.value === 'Regretfully declines';
+  if (!isDeclining && !meal) { alert('Please select a meal preference.'); return; }
 
   const entry = {
     timestamp: new Date().toLocaleString('en-SG', {timeZone:'Asia/Singapore'}),
@@ -2189,7 +2192,7 @@ async function submitRSVP() {
     phone: document.getElementById('f-phone').value.trim(),
     attendance: attendance ? attendance.value : 'Not specified',
     guests: document.getElementById('f-guests').value,
-    meal: document.getElementById('f-meal').value,
+    meal,
     dietary: document.getElementById('f-dietary').value.trim(),
     song: document.getElementById('f-song').value.trim(),
     message: document.getElementById('f-msg').value.trim(),
@@ -2212,7 +2215,6 @@ async function submitRSVP() {
 
   const successTitle = document.getElementById('rsvp-success-title');
   const successMessage = document.getElementById('rsvp-success-message');
-  const isDeclining = attendance && attendance.value === 'Regretfully declines';
   if (isDeclining) {
     successTitle.textContent = '谢谢你的祝福';
     successMessage.textContent = "Thank you for letting us know. We will miss celebrating with you, and we're grateful for your well wishes.";
